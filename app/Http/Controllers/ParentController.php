@@ -135,4 +135,47 @@ class ParentController extends Controller
             return redirect()->back()->with('error', 'Old password do not have!');
         }
     }
+
+    // assign student
+    public function assignStudentForm($id)
+    {
+        $parent = User::where('id', $id)->where('role', 'parent')->firstOrFail();
+        $students = User::where('role', 'student')->whereNull('parent_id')->get(); // Only unassigned students
+
+        return view('admin.assign_student_to_parent', compact('parent', 'students'));
+    }
+
+    public function assignStudent(Request $request, $id)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:users,id',
+        ]);
+
+        $parent = User::where('id', $id)->where('role', 'parent')->firstOrFail();
+        $student = User::where('id', $request->student_id)->where('role', 'student')->firstOrFail();
+
+        // Assign the parent to the student
+        $student->parent_id = $parent->id;
+        $student->save();
+
+        return redirect()->route('parent.index')->with('success', 'Student assigned to parent successfully!');
+    }
+
+    public function viewAssignedStudents($id)
+    {
+        $parent = User::with('students')->where('id', $id)->where('role', 'parent')->firstOrFail();
+        return view('admin.parent_view_student', compact('parent'));
+    }
+
+    public function unassignStudent($parentId, $studentId)
+    {
+        $parent = User::where('id', $parentId)->where('role', 'parent')->firstOrFail();
+        $student = User::where('id', $studentId)->where('role', 'student')->firstOrFail();
+
+        // Set the parent_id of the student to null
+        $student->parent_id = null;
+        $student->save();
+
+        return redirect()->route('parent.view', $parentId)->with('success', 'Student removed successfully!');
+    }
 }

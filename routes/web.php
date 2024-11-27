@@ -89,6 +89,12 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/teacher/edit/{id}', [TeacherController::class, 'edit'])->name('teacher.edit');
         Route::put('/teacher/update/{id}', [TeacherController::class, 'update'])->name('teacher.update');
         Route::delete('/teacher/destroy/{id}', [TeacherController::class, 'destroy'])->name('teacher.destroy');
+
+        // assign student to parent
+        Route::get('/parent/{id}/assign-student', [ParentController::class, 'assignStudentForm'])->name('assign.student');
+        Route::post('/parent/{id}/assign-student', [ParentController::class, 'assignStudent'])->name('assign.student.submit');
+        Route::get('/parent/{id}/view', [ParentController::class, 'viewAssignedStudents'])->name('parent.view');
+        Route::delete('/parent/{parent_id}/student/{student_id}/unassign', [ParentController::class, 'unassignStudent'])->name('student.unassign');
     });
 
     // student

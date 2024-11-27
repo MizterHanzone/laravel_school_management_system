@@ -60,4 +60,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(AcademiYear::class, 'acdemi_year_id');
     }
+
+    // A student belongs to a parent
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    // A parent has many students
+    public function students()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
 }
