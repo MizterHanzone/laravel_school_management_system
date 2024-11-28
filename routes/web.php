@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AcademiYearController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssignClassToTeacher;
+use App\Http\Controllers\AssignClassToTeacherController;
 use App\Http\Controllers\AssignSubjectToClassController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClassesController;
@@ -95,6 +97,14 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::post('/parent/{id}/assign-student', [ParentController::class, 'assignStudent'])->name('assign.student.submit');
         Route::get('/parent/{id}/view', [ParentController::class, 'viewAssignedStudents'])->name('parent.view');
         Route::delete('/parent/{parent_id}/student/{student_id}/unassign', [ParentController::class, 'unassignStudent'])->name('student.unassign');
+
+        // assign class to teacher
+        Route::get('/assign/class/to/teacher', [AssignClassToTeacherController::class, 'index'])->name('assign.classe.to.teacher');
+        Route::get('/assign/class/to/teacher/create', [AssignClassToTeacherController::class, 'create'])->name('assign.classe.to.create');
+        Route::post('/assign/class/to/teacher/store', [AssignClassToTeacherController::class, 'store'])->name('assign_class_to_teacher.store');
+        Route::get('/assign/class/to/teacher/edit/{id}', [AssignClassToTeacherController::class, 'edit'])->name('assign_class_to_teacher.edit');
+        Route::put('/assign/class/to/teacher/update/{class_id}', [AssignClassToTeacherController::class, 'update'])->name('assign_class_to_teacher.update');
+        Route::delete('/assign/class/to/teacher/unassign/{id}', [AssignClassToTeacherController::class, 'destroy'])->name('assign_class_to_teacher.destroy');
     });
 
     // student
@@ -103,6 +113,7 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/student/profile', [StudentControllercls::class, 'profile'])->name('student.profile');
         Route::get('/student/change/password', [StudentControllercls::class, 'student_change_password'])->name('student.change.password');
         Route::post('/student/update/password', [StudentControllercls::class, 'student_update_password'])->name('student.update.password');
+        Route::get('/student/my/subject', [StudentControllercls::class, 'my_subject'])->name('student.my.subject');
     });
 
     // teacher
@@ -112,6 +123,7 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/teacher/change/password', [TeacherController::class, 'teacher_change_password'])->name('teacher.teacher.change.password');
         Route::post('/teacher/update/password', [TeacherController::class, 'teacher_update_password'])->name('teacher.teacher.update.password');
         Route::get('/teacher/profile', [TeacherController::class, 'teacher_profile'])->name('teacher.teacher.profile');
+        Route::get('/teacher/my/class/subject', [TeacherController::class, 'my_classes_subjects'])->name('teacher.my.classes.subjects');
     });
 
     // parent
@@ -120,5 +132,6 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/parent/profile', [ParentController::class, 'parent_profile'])->name('parent.profile');
         Route::get('/parent/change/password', [ParentController::class, 'parent_change_password'])->name('parent.change.password');
         Route::post('/parent/update/password', [ParentController::class, 'parent_update_password'])->name('parent.update.password');
+        Route::get('/parent/view/student', [ParentController::class, 'view_my_student'])->name('parent.view.my.student');
     });
 });

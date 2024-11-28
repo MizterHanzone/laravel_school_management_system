@@ -21,6 +21,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+
     @yield('style')
 </head>
 
@@ -35,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link">Hi! {{ Auth::user()->name }}</a>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link">Hi! {{ Auth::user()->name }} {{Auth::user()->last_name}}</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -103,6 +105,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('assign.classe.to.teacher') }}"
+                                class="nav-link {{ request()->routeIs('assign.classe.to.teacher') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-tasks"></i>
+                                <p>Assign Class</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('student.index') }}"
                                 class="nav-link {{ request()->routeIs('student.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-graduate"></i>
@@ -147,6 +156,7 @@
     <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
     @yield('script')
 </body>
 

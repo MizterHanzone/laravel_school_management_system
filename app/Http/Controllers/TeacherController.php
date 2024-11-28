@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -195,5 +196,22 @@ class TeacherController extends Controller
         } else {
             return redirect()->back()->with('error', 'Old password do not have!');
         }
+    }
+
+    public function my_classes_subjects()
+    {
+        $teacher = Auth::user();
+
+        // Get classes assigned to the teacher
+        $classes = $teacher->classes;
+
+        // Get subjects assigned to those classes
+        $subjects = Subject::whereIn('id', function ($query) use ($classes) {
+            $query->select('subject_id')
+                ->from('assign_subject_to_classes')
+                ->whereIn('class_id', $classes->pluck('id'));
+        })->get();
+
+        return view('teacher.my_classes_subjects', compact('classes', 'subjects'));
     }
 }

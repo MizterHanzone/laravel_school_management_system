@@ -204,4 +204,14 @@ class StudentControllercls extends Controller
             return redirect()->back()->with('error', 'Old password do not have!');
         }
     }
+
+    public function my_subject()
+    {
+        $student = Auth::user(); // Get the authenticated student
+
+        // Load subjects for the student's class
+        $subjects = $student->class->subjects ?? collect();
+
+        return view('student.my_subjects', compact('subjects'));
+    }
 }

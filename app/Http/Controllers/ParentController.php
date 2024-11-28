@@ -96,46 +96,6 @@ class ParentController extends Controller
         return redirect()->route('parent.index')->with('success', 'Parent updated successfully!');
     }
 
-    // parth parent
-    public function parent_dashboard()
-    {
-        return view('parent.dashboard');
-    }
-
-    public function parent_profile()
-    {
-        $parent = User::where('role', 'parent')->find(Auth::id());
-
-        return view('parent.parent_profile', compact('parent'));
-    }
-
-    public function parent_change_password()
-    {
-        return view('parent.parent_update_password');
-    }
-
-    public function parent_update_password(Request $request)
-    {
-        $request->validate([
-            'old_password' => 'required|string|min:6',
-            'new_password' => 'required|string|min:6',
-            'confirm_password' => 'required|string|min:6|same:new_password',
-        ]);
-
-        $old_password = $request->old_password;
-        $new_password = $request->new_password;
-
-        $parent = User::find(Auth::user()->id);
-        // dd($parent);
-        if (Hash::check($old_password, $parent->password)) {
-            $parent->password = $new_password;
-            $parent->save();
-            return redirect()->back()->with('success', 'Password changed successfully!');
-        } else {
-            return redirect()->back()->with('error', 'Old password do not have!');
-        }
-    }
-
     // assign student
     public function assignStudentForm($id)
     {
@@ -178,4 +138,57 @@ class ParentController extends Controller
 
         return redirect()->route('parent.view', $parentId)->with('success', 'Student removed successfully!');
     }
+
+    // parth parent
+    public function parent_dashboard()
+    {
+        return view('parent.dashboard');
+    }
+
+    public function parent_profile()
+    {
+        $parent = User::where('role', 'parent')->find(Auth::id());
+
+        return view('parent.parent_profile', compact('parent'));
+    }
+
+    public function parent_change_password()
+    {
+        return view('parent.parent_update_password');
+    }
+
+    public function parent_update_password(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|string|min:6',
+            'new_password' => 'required|string|min:6',
+            'confirm_password' => 'required|string|min:6|same:new_password',
+        ]);
+
+        $old_password = $request->old_password;
+        $new_password = $request->new_password;
+
+        $parent = User::find(Auth::user()->id);
+        // dd($parent);
+        if (Hash::check($old_password, $parent->password)) {
+            $parent->password = $new_password;
+            $parent->save();
+            return redirect()->back()->with('success', 'Password changed successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Old password do not have!');
+        }
+    }
+
+    public function view_my_student()
+    {
+        $parent_id = Auth::id(); // Get the ID of the logged-in parent
+        $my_students = User::where('role', 'student') // Filter by role 'student'
+            ->where('parent_id', $parent_id) // Match the logged-in parent's ID
+            ->get(); // Retrieve all matching records
+
+        return view('parent.parent_view_my_student', compact('my_students'));
+    }
 }
+
+// $parent = User::with('students')->where('id', $id)->where('role', 'parent')->firstOrFail();
+//         return view('admin.parent_view_student', compact('parent'));

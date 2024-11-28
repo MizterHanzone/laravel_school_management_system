@@ -37,7 +37,7 @@
                 <li class="nav-item d-flex align-items-center">
                     <img src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('default-user.png') }}"
                          alt="User Photo" class="rounded-circle" width="40" height="40" style="margin-right: 10px;">
-                    <a href="{{ route('student.dashboard') }}" class="nav-link"> {{ Auth::user()->name }}</a>
+                    <a href="{{ route('student.dashboard') }}" class="nav-link"> {{ Auth::user()->name }} {{Auth::user()->last_name}}</a>
                 </li>                
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -67,6 +67,13 @@
                                 class="nav-link {{ request()->routeIs('parent.profile') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>My Profile</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('parent.view.my.student')}}"
+                                class="nav-link {{ request()->routeIs('parent.view.my.student') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>My Students</p>
                             </a>
                         </li>
                         <li class="nav-item">
