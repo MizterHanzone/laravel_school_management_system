@@ -70,10 +70,17 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('teacher.my.classes.subjects')}}"
-                                class="nav-link {{ request()->routeIs('teacher.my.classes.subjects') ? 'active' : '' }}">
+                            <a href="{{route('my.classes.subjects')}}"
+                                class="nav-link {{ request()->routeIs('my.classes.subjects') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>My Subject & Class</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('teacher.students.in.classes')}}"
+                                class="nav-link {{ request()->routeIs('teacher.students.in.classes') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>My Students</p>
                             </a>
                         </li>
                         <li class="nav-item">

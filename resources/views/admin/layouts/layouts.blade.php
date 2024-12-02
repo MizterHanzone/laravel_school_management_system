@@ -112,6 +112,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('time.table.index') }}"
+                                class="nav-link {{ request()->routeIs('time.table.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar-check"></i>
+                                <p>Time Table</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('student.index') }}"
                                 class="nav-link {{ request()->routeIs('student.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-graduate"></i>

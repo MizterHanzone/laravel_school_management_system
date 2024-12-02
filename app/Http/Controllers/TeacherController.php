@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classes;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends Controller
@@ -213,5 +215,25 @@ class TeacherController extends Controller
         })->get();
 
         return view('teacher.my_classes_subjects', compact('classes', 'subjects'));
+    }
+
+    public function get_students_in_teacher_classes()
+    {
+        $teacher = Auth::user();
+
+        // Get the teacher's class IDs from the pivot table
+        $classIds = DB::table('class_teacher') // Pivot table name
+            ->where('user_id', $teacher->id)
+            ->pluck('class_id');
+
+        // Fetch all students in those classes
+        $students = User::where('role', 'student') // Assuming 'role' distinguishes user roles
+            ->whereIn('class_id', $classIds) // Assuming students have a class_id column
+            ->get();
+
+        // Fetch class details
+        $classes = Classes::whereIn('id', $classIds)->get();
+
+        return view('teacher.my_students_in_classes', compact('students', 'classes'));
     }
 }

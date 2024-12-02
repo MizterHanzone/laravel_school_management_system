@@ -11,6 +11,7 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentControllercls;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TimeTableController;
 use App\Http\Middleware\SessionTimeout;
 use Illuminate\Support\Facades\Route;
 
@@ -105,6 +106,18 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/assign/class/to/teacher/edit/{id}', [AssignClassToTeacherController::class, 'edit'])->name('assign_class_to_teacher.edit');
         Route::put('/assign/class/to/teacher/update/{class_id}', [AssignClassToTeacherController::class, 'update'])->name('assign_class_to_teacher.update');
         Route::delete('/assign/class/to/teacher/unassign/{id}', [AssignClassToTeacherController::class, 'destroy'])->name('assign_class_to_teacher.destroy');
+
+        // time table
+        Route::get('/time/table', [TimeTableController::class, 'index'])->name('time.table.index');
+        Route::get('/time/table/create', [TimeTableController::class, 'create'])->name('time.table.create');
+        Route::get('/subjects-by-class', [TimeTableController::class, 'getSubjectsByClass'])->name('get.subjects.by.class');
+        Route::post('/time/table/store', [TimeTableController::class, 'store'])->name('time.table.store');
+        Route::get('time/table/{id}/edit', [TimeTableController::class, 'edit'])->name('time.table.edit');
+        Route::put('time/table/{id}', [TimeTableController::class, 'update'])->name('time.table.update');
+        Route::delete('/time/tables/{class_id}', [TimeTableController::class, 'destroy'])->name('time.table.destroy');
+
+        // Route::get('/subjects-by-class', [TimeTableController::class, 'getSubjectsByClass']);
+        Route::resource('time_table', TimeTableController::class);
     });
 
     // student
@@ -123,7 +136,8 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/teacher/change/password', [TeacherController::class, 'teacher_change_password'])->name('teacher.teacher.change.password');
         Route::post('/teacher/update/password', [TeacherController::class, 'teacher_update_password'])->name('teacher.teacher.update.password');
         Route::get('/teacher/profile', [TeacherController::class, 'teacher_profile'])->name('teacher.teacher.profile');
-        Route::get('/teacher/my/class/subject', [TeacherController::class, 'my_classes_subjects'])->name('teacher.my.classes.subjects');
+        Route::get('/teacher/my/class/subject', [TeacherController::class, 'my_classes_subjects'])->name('my.classes.subjects');
+        Route::get('/teacher/students/in/classes', [TeacherController::class, 'get_students_in_teacher_classes'])->name('teacher.students.in.classes');
     });
 
     // parent
