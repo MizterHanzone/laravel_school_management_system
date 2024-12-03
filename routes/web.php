@@ -127,6 +127,7 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/student/change/password', [StudentControllercls::class, 'student_change_password'])->name('student.change.password');
         Route::post('/student/update/password', [StudentControllercls::class, 'student_update_password'])->name('student.update.password');
         Route::get('/student/my/subject', [StudentControllercls::class, 'my_subject'])->name('student.my.subject');
+        Route::get('/student/time-table', [StudentControllercls::class, 'my_time_table'])->name('student.time.table');
     });
 
     // teacher
@@ -147,5 +148,6 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('/parent/change/password', [ParentController::class, 'parent_change_password'])->name('parent.change.password');
         Route::post('/parent/update/password', [ParentController::class, 'parent_update_password'])->name('parent.update.password');
         Route::get('/parent/view/student', [ParentController::class, 'view_my_student'])->name('parent.view.my.student');
+        Route::get('/parent/student/timetable/{id}', [ParentController::class, 'my_student_time_table'])->name('parent.student.timetable');
     });
 });

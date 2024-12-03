@@ -45,7 +45,6 @@
                                         <th>Class</th>
                                         <th>AcademicYear</th>
                                         <th>Status</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,18 +63,6 @@
                                             <td>{{ $student->class ? $student->class->name : 'No Class' }}</td>
                                             <td>{{ $student->academiYear ? $student->academiYear->name : 'No Academic' }}</td>
                                             <td>{{ $student->status}}</td>
-                                            <td>
-                                                <a href="{{ route('student.edit', $student->id) }}" class="btn btn-success">Edit</a>
-                                                <form
-                                                    action="{{ route('student.destroy', $student->id) }}"
-                                                    method="POST" class="d-inline"
-                                                    id="delete-form-{{ $student->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger"
-                                                        onclick="confirmDelete({{ $student->id }})">Delete</button>
-                                                </form>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

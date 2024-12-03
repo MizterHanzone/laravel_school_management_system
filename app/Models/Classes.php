@@ -40,14 +40,8 @@ class Classes extends Model
         return $this->hasMany(AssignClassToTeacher::class, 'class_id');
     }
 
-//     public function teachers()
-// {
-//     return $this->belongsToMany(User::class, 'class_teacher', 'class_id', 'user_id');
-// }
-
-// public function assignedTeachers()
-// {
-//     return $this->hasMany(AssignClassToTeacher::class, 'class_id');
-// }
-
+    public function timeTables()
+    {
+        return $this->hasMany(TimeTable::class, 'class_id');
+    }
 }

@@ -48,6 +48,33 @@
                                     @error('email')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
+                                    <div class="form-group col-md-2">
+                                        <label for="photo">Photo</label>
+                                        <div class="custom-file">
+                                            <!-- Hidden file input -->
+                                            <input type="file" name="photo" class="custom-file-input" id="photoInput"
+                                                onchange="previewImage(event)">
+                                            <!-- Custom label acting as a button -->
+                                            <label class="custom-file-label" for="photoInput">
+                                                <i class="fas fa-camera"></i> Upload
+                                            </label>
+                                        </div>
+                                        @error('photo')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <!-- Image preview -->
+                                    <div class="form-group col-md-2">
+                                        <img id="photoPreview"
+                                            src="{{ $admin->photo ? asset('storage/' . $admin->photo) : '#' }}"
+                                            alt="Image Preview"
+                                            style="display: {{ $admin->photo ? 'block' : 'none' }}; 
+                                                    width: 100px; 
+                                                    height: 100px; 
+                                                    object-fit: cover; 
+                                                    border: 1px solid #ddd; 
+                                                    border-radius: 5px;">
+                                    </div>
                                 </div>
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-success">Update</button>
@@ -60,3 +87,19 @@
         </section>
     </div>
 @endsection
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const image = document.getElementById('photoPreview');
+            image.src = e.target.result; // Set image preview
+            image.style.display = 'block'; // Show the image element
+        };
+
+        if (file) {
+            reader.readAsDataURL(file); // Read the selected file
+        }
+    }
+</script>

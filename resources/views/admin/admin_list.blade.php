@@ -38,6 +38,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Photo</th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
@@ -48,6 +49,7 @@
                                 @foreach ($admins as $admin)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td><img src="{{ asset('storage/' . $admin->photo) }}" alt="" class="image" width="50" height="50"></td>
                                         <td>{{ $admin->id }}</td>
                                         <td>{{ $admin->name }}</td>
                                         <td>{{ $admin->email }}</td>

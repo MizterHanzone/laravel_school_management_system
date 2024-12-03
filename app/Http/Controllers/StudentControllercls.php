@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademiYear;
 use App\Models\Classes;
+use App\Models\TimeTable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -213,5 +214,21 @@ class StudentControllercls extends Controller
         $subjects = $student->class->subjects ?? collect();
 
         return view('student.my_subjects', compact('subjects'));
+    }
+
+    public function my_time_table()
+    {
+        // Assuming a student is logged in and their class_id is stored in their profile
+        $student = Auth::user();
+        $class_id = $student->class_id;
+
+        // Fetch the timetable for the student's class
+        $timeTables = TimeTable::where('class_id', $class_id)
+            ->with(['day', 'subject'])
+            ->orderBy('day_id')
+            ->orderBy('start_time')
+            ->get();
+
+        return view('student.my_time_table', compact('timeTables'));
     }
 }

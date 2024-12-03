@@ -34,7 +34,7 @@
                                     <div class="form-group col-md-4">
                                         <label for="name">FirstName</label>
                                         <input type="name" name="name" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Enter first name" value="{{ old('name') }}">
+                                            placeholder="Enter first name" value="{{ old('name') }}" autofocus>
                                     </div>
                                     @error('name')
                                         <p class="text-danger">{{ $message }}</p>

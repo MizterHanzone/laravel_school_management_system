@@ -19,25 +19,40 @@ class TimeTable extends Model
     ];
 
     // Define the relationship to the Class
-    public function class()
-    {
-        return $this->belongsTo(Classes::class);
-    }
+    // public function class()
+    // {
+    //     return $this->belongsTo(Classes::class);
+    // }
 
-    // Define the relationship to the Subject
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class);
-    }
+    // // Define the relationship to the Subject
+    // public function subject()
+    // {
+    //     return $this->belongsTo(Subject::class);
+    // }
 
-    // Define the relationship to Day
-    public function day()
-    {
-        return $this->belongsTo(Day::class);
-    }
+    // // Define the relationship to Day
+    // public function day()
+    // {
+    //     return $this->belongsTo(Day::class);
+    // }
 
     public function timeTables()
     {
         return $this->hasMany(TimeTable::class, 'class_id', 'class_id');
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+
+    public function day()
+    {
+        return $this->belongsTo(Day::class, 'day_id');
     }
 }

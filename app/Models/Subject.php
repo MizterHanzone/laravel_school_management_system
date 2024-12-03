@@ -26,4 +26,9 @@ class Subject extends Model
     {
         return $this->belongsToMany(Classes::class, 'assign_subject_to_classes', 'subject_id', 'class_id');
     }
+
+    public function timeTables()
+    {
+        return $this->hasMany(TimeTable::class, 'subject_id');
+    }
 }

@@ -27,6 +27,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Photo</th>
                                 <th>FirstName</th>
                                 <th>LastName</th>
                                 <th>Gender</th>
@@ -38,12 +39,14 @@
                                 <th>Class</th>
                                 <th>AcademicYear</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($my_students as $my_student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td><img src="{{ asset('storage/' . $my_student->photo) }}" alt="" class="image" width="50" height="50"></td>
                                     <td>{{ $my_student->name }}</td>
                                     <td>{{ $my_student->last_name }}</td>
                                     <td>{{ $my_student->gender == 1 ? 'Male' : 'Female' }}</td>
@@ -55,6 +58,9 @@
                                     <td>{{ $my_student->class ? $my_student->class->name : 'No Class' }}</td>
                                     <td>{{ $my_student->academiYear ? $my_student->academiYear->name : 'No Academic' }}</td>
                                     <td>{{ $my_student->status }}</td>
+                                    <td>
+                                        <a href="{{ route('parent.student.timetable', $my_student->id) }}" class="btn btn-primary">My Student Time Table</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

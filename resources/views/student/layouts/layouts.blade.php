@@ -77,6 +77,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{route('student.time.table')}}"
+                                class="nav-link {{ request()->routeIs('student.time.table') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-chalkboard"></i>
+                                <p>My Time Table</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('student.change.password')}}"
                                 class="nav-link {{ request()->routeIs('student.change.password') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-key"></i>

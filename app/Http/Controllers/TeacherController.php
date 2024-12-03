@@ -200,21 +200,38 @@ class TeacherController extends Controller
         }
     }
 
+    // public function my_classes_subjects()
+    // {
+    //     $teacher = Auth::user();
+
+    //     // Get classes assigned to the teacher
+    //     $classes = $teacher->classes;
+
+    //     // Get subjects assigned to those classes
+    //     $subjects = Subject::whereIn('id', function ($query) use ($classes) {
+    //         $query->select('subject_id')
+    //             ->from('assign_subject_to_classes')
+    //             ->whereIn('class_id', $classes->pluck('id'));
+    //     })->get();
+
+    //     return view('teacher.my_classes_subjects', compact('classes', 'subjects'));
+    // }
+
     public function my_classes_subjects()
     {
-        $teacher = Auth::user();
+        $teacherId = Auth::id(); // Get the authenticated teacher's ID
 
-        // Get classes assigned to the teacher
-        $classes = $teacher->classes;
+        // Fetch classes assigned to the teacher
+        $classes = Classes::whereHas('teachers', function ($query) use ($teacherId) {
+            $query->where('user_id', $teacherId); // Ensure the teacher is assigned to the class
+        })
+            ->with([
+                'subjects', // Load the subjects for the class
+                'timeTables' // Load the timetables for the class
+            ])
+            ->get();
 
-        // Get subjects assigned to those classes
-        $subjects = Subject::whereIn('id', function ($query) use ($classes) {
-            $query->select('subject_id')
-                ->from('assign_subject_to_classes')
-                ->whereIn('class_id', $classes->pluck('id'));
-        })->get();
-
-        return view('teacher.my_classes_subjects', compact('classes', 'subjects'));
+        return view('teacher.my_classes_subjects', compact('classes'));
     }
 
     public function get_students_in_teacher_classes()

@@ -97,7 +97,7 @@ class User extends Authenticatable
 
     public function classes()
     {
-        return $this->belongsToMany(Classes::class, 'class_teacher', 'user_id', 'class_id');
+        return $this->belongsToMany(Classes::class, 'class_teacher', 'user_id', 'class_id', 'assign_class_student');
     }
 
     // show teacher class subject
@@ -109,4 +109,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Subject::class, 'assign_subject_to_classes', 'user_id', 'subject_id');
     }
+    
 }

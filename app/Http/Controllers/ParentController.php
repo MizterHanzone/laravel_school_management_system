@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TimeTable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -188,7 +189,24 @@ class ParentController extends Controller
 
         return view('parent.parent_view_my_student', compact('my_students'));
     }
-}
 
-// $parent = User::with('students')->where('id', $id)->where('role', 'parent')->firstOrFail();
-//         return view('admin.parent_view_student', compact('parent'));
+    public function my_student_time_table($id)
+    {
+        $my_students = User::find($id);
+        if ($my_students && $my_students->role == 'student' && $my_students->parent_id == Auth::id()) {
+            // Fetch the class ID of the student
+            $class_id = $my_students->class_id;
+
+            // Fetch the timetable for the student's class
+            $timeTables = TimeTable::where('class_id', $class_id)
+                ->with(['day', 'subject'])  // Eager load day and subject relationships
+                ->orderBy('day_id')
+                ->orderBy('start_time')
+                ->get();
+
+            return view('parent.parent_view_student_timetable', compact('my_students', 'timeTables'));
+        } else {
+            return redirect()->route('parent.view_my_students')->with('error', 'You do not have access to this student\'s timetable.');
+        }
+    }
+}
