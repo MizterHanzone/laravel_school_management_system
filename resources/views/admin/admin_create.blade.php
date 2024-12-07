@@ -28,60 +28,52 @@
                             <div class="card-header">
                                 <h3 class="card-title">Add New Admin</h3>
                             </div>
-                            <form action="{{route('admin.store')}}" method="POST">
+                            <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
-                                        <input type="name" name="name" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Enter name" value="{{old('name')}}" autofocus>
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" class="form-control" placeholder="Enter Name"
+                                            value="{{ old('name') }}">
+                                        @error('name')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('name')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email</label>
-                                        <input type="email" name="email" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Enter email" value="{{old('email')}}">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" class="form-control" placeholder="Enter Email"
+                                            value="{{ old('email') }}">
+                                        @error('email')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('email')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Passowrd</label>
-                                        <input type="password" name="password" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Enter password" value="{{old('password')}}">
+                                        <label for="password">Password</label>
+                                        <input type="password" name="password" class="form-control"
+                                            placeholder="Enter Password">
+                                        @error('password')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('password')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                    <div class="form-group col-md-2">
+
+                                    <div class="form-group">
                                         <label for="photo">Photo</label>
-                                        <div class="custom-file">
-                                            <!-- Hidden file input -->
-                                            <input 
-                                                type="file" 
-                                                name="photo"
-                                                class="custom-file-input" 
-                                                id="photoInput" 
-                                                onchange="previewImage(event)">
-                                            
-                                            <!-- Custom label acting as a button -->
-                                            <label class="custom-file-label" for="photoInput">
-                                                <i class="fas fa-camera"></i> Upload
-                                            </label>
-                                        </div>
+                                        <input type="file" name="photo" class="form-control-file" id="photoInput"
+                                            onchange="previewImage(event)">
                                         @error('photo')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                    <!-- Image preview -->
-                                    <div class="form-group col-md-2">
-                                        <img id="photoPreview" src="#" alt="" style="display:none; width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd; border-radius: 5px;">
-                                    </div>   
+
+                                    <div class="form-group">
+                                        <img id="photoPreview" src="#" alt="Image Preview"
+                                            style="display: none; width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd; border-radius: 5px;">
+                                    </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-success">Create</button>
                                 </div>
                             </form>
                         </div>

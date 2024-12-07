@@ -31,4 +31,9 @@ class Subject extends Model
     {
         return $this->hasMany(TimeTable::class, 'subject_id');
     }
+
+    public function examSchedules()
+    {
+        return $this->hasMany(ExamSchedule::class);
+    }
 }

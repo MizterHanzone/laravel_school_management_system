@@ -7,6 +7,8 @@ use App\Http\Controllers\AssignClassToTeacherController;
 use App\Http\Controllers\AssignSubjectToClassController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\ExaminationController;
+use App\Http\Controllers\ExamScheduleController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentControllercls;
 use App\Http\Controllers\SubjectController;
@@ -115,9 +117,22 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::get('time/table/{id}/edit', [TimeTableController::class, 'edit'])->name('time.table.edit');
         Route::put('time/table/{id}', [TimeTableController::class, 'update'])->name('time.table.update');
         Route::delete('/time/tables/{class_id}', [TimeTableController::class, 'destroy'])->name('time.table.destroy');
-
         // Route::get('/subjects-by-class', [TimeTableController::class, 'getSubjectsByClass']);
         Route::resource('time_table', TimeTableController::class);
+
+        // examination
+        Route::get('/examination', [ExaminationController::class, 'index'])->name('examination.index');
+        Route::get('/examination/create', [ExaminationController::class, 'create'])->name('examination.create');
+        Route::post('/examination/create', [ExaminationController::class, 'store'])->name('examination.store');
+        Route::get('/examination/edit/{id}', [ExaminationController::class, 'edit'])->name('examination.edit');
+        Route::put('/examination/update/{id}', [ExaminationController::class, 'update'])->name('examination.update');
+        Route::delete('/examination/destroy/{id}', [ExaminationController::class, 'destroy'])->name('examination.destroy');
+
+        // exam schedule
+        Route::get('/exam/schedule', [ExamScheduleController::class, 'index'])->name('exam.schedule.index');
+        Route::get('/exam/schedule/create', [ExamScheduleController::class, 'create'])->name('exam.schedule.create');
+        Route::get('/get/subjects/by/class', [ExamScheduleController::class, 'getSubjectsByClass'])->name('get.subjects.by.class.exam');
+        Route::post('/exam-schedules/store', [ExamScheduleController::class, 'store'])->name('exam.schedule.store');
     });
 
     // student

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -32,21 +33,13 @@ class AdminController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'photo' => 'nullable|max:2048',
         ]);
 
         $admin = new User();
         $admin->name = $request->name;
         $admin->email = $request->email;
-        $admin->password = $request->name;
+        $admin->password = Hash::make($request->password); // Secure the password
         $admin->role = 'admin';
-
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photo = $request->file('photo');
-            $photoName = time() . '.' . $photo->getClientOriginalExtension(); // Custom file name
-            $photoPath = $photo->storeAs('adminImage', $photoName, 'public'); // Store in 'parentImage' folder
-            $admin->photo = $photoPath;
-        }
 
         $admin->save();
 
@@ -61,27 +54,16 @@ class AdminController extends Controller
 
     public function admin_update(Request $request, $id)
     {
-        $admin = User::findOrFail($request->id);
+        $admin = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-            'photo' => 'nullable|max:2048',
         ]);
+
         $admin->name = $request->name;
         $admin->email = $request->email;
 
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            // Delete the old photo from storage if it exists
-            if ($admin->photo && file_exists(storage_path('app/public/' . $admin->photo))) {
-                unlink(storage_path('app/public/' . $admin->photo));
-            }
-
-            // Store the new photo
-            $photo = $request->file('photo');
-            $photoName = time() . '.' . $photo->getClientOriginalExtension(); // Custom file name
-            $photoPath = $photo->storeAs('adminImage', $photoName, 'public');
-            $admin->photo = $photoPath;
-        }
         $admin->save();
 
         return redirect()->route('admin.list')->with('success', 'Admin updated successfully!');

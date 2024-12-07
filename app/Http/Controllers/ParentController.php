@@ -97,6 +97,14 @@ class ParentController extends Controller
         return redirect()->route('parent.index')->with('success', 'Parent updated successfully!');
     }
 
+    public function destory($id)
+    {
+        $parent = User::findOrFail($id);
+        $parent->delete();
+
+        return redirect()->route('parent.index')->with('success', 'Parent deleted successfully!');
+    }
+
     // assign student
     public function assignStudentForm($id)
     {

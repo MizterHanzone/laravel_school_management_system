@@ -119,6 +119,20 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('examination.index') }}"
+                                class="nav-link {{ request()->routeIs('examination.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-clipboard-check"></i>
+                                <p>Examination</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('exam.schedule.index') }}"
+                                class="nav-link {{ request()->routeIs('exam.schedule.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>Exam Schedules</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('student.index') }}"
                                 class="nav-link {{ request()->routeIs('student.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-graduate"></i>
