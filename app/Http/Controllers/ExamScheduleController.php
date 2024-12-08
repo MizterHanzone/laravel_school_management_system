@@ -21,25 +21,36 @@ class ExamScheduleController extends Controller
         $examinations = Examination::all();
         $subjects = Subject::all();
 
-        // Capture the selected class ID
+        // Capture the selected class ID and examination ID
         $class_id = $request->input('class_id');
+        $examination_id = $request->input('examination_id');
 
         // Default to an empty collection
         $exam_schedules = collect();
 
-        if ($class_id) {
-            // Fetch exam schedules for the selected class
+        // If class_id and examination_id are selected, filter the exam schedules accordingly
+        if ($class_id && $examination_id) {
+            $exam_schedules = ExamSchedule::where('class_id', $class_id)
+                ->where('examination_id', $examination_id)
+                ->with(['class', 'subject', 'examination'])
+                ->get();
+        } elseif ($class_id) {
             $exam_schedules = ExamSchedule::where('class_id', $class_id)
                 ->with(['class', 'subject', 'examination'])
                 ->get();
-
-            // Debugging data
-            Log::info('Selected Class ID:', ['class_id' => $class_id]);
-            Log::info('Fetched Exam Schedules:', ['data' => $exam_schedules]);
+        } elseif ($examination_id) {
+            $exam_schedules = ExamSchedule::where('examination_id', $examination_id)
+                ->with(['class', 'subject', 'examination'])
+                ->get();
         }
 
+        // Debugging data
+        // Log::info('Selected Class ID:', ['class_id' => $class_id]);
+        // Log::info('Selected Examination ID:', ['examination_id' => $examination_id]);
+        // Log::info('Fetched Exam Schedules:', ['data' => $exam_schedules]);
+
         // Pass data to the view
-        return view('admin.exam_schedule_index', compact('classes', 'examinations', 'subjects', 'exam_schedules', 'class_id'));
+        return view('admin.exam_schedule_index', compact('classes', 'examinations', 'subjects', 'exam_schedules', 'class_id', 'examination_id'));
     }
 
     /**
