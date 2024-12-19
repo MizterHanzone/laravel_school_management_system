@@ -99,17 +99,21 @@
         $(document).ready(function() {
             $('#class_id').change(function() {
                 const classId = $(this).val();
-                if (classId) {
+                const examinationId = $('#examination_id').val(); // Get the selected examination ID
+
+                if (classId && examinationId) {
                     $.ajax({
-                        url: '{{ route('get.subjects.by.class') }}', // Adjust this route to match your route
+                        url: '{{ route('get.subjects.by.classes') }}', // Correct route
                         type: 'GET',
                         data: {
-                            class_id: classId
+                            class_id: classId,
+                            examination_id: examinationId
                         },
                         success: function(response) {
                             $('#schedule-rows').empty(); // Clear existing rows
-                            response.forEach((subject, index) => {
-                                $('#schedule-rows').append(`
+                            if (response.length > 0) {
+                                response.forEach((subject, index) => {
+                                    $('#schedule-rows').append(`
                                 <tr>
                                     <td>
                                         <input type="hidden" name="schedules[${index}][subject_id]" value="${subject.id}">
@@ -124,7 +128,12 @@
                                     <td><input type="number" name="schedules[${index}][pass_mark]" class="form-control" step="any" min="1"></td>
                                 </tr>
                             `);
-                            });
+                                });
+                            } else {
+                                $('#schedule-rows').append(
+                                    `<tr><td colspan="8" class="text-center">No available subjects for this class and examination.</td></tr>`
+                                    );
+                            }
                         },
                         error: function() {
                             alert('Unable to fetch subjects. Please try again.');

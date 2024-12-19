@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssignSubjectToClass;
 use App\Models\Classes;
 use App\Models\Examination;
 use App\Models\ExamSchedule;
@@ -67,10 +68,38 @@ class ExamScheduleController extends Controller
     // Fetch subjects based on the selected class
     public function getSubjectsByClass(Request $request)
     {
-        $classId = $request->input('class_id');
-        $subjects = Subject::where('class_id', $classId)->get(['id', 'name']);
-        return response()->json($subjects);
+        $request->validate([
+            'class_id' => 'required|integer|exists:classes,id',
+            'examination_id' => 'required|integer|exists:examinations,id',
+        ]);
+
+        $classId = $request->class_id;
+        $examinationId = $request->examination_id;
+
+        // Get subjects assigned to the class
+        $assignedSubjects = AssignSubjectToClass::where('class_id', $classId)
+            ->with('subject')
+            ->get();
+
+        // Get subject IDs already scheduled for the class and examination
+        $scheduledSubjectIds = ExamSchedule::where('class_id', $classId)
+            ->where('examination_id', $examinationId)
+            ->pluck('subject_id')
+            ->toArray();
+
+        // Exclude already scheduled subjects
+        $availableSubjects = $assignedSubjects->filter(function ($assign) use ($scheduledSubjectIds) {
+            return !in_array($assign->subject->id, $scheduledSubjectIds);
+        })->map(function ($assign) {
+            return [
+                'id' => $assign->subject->id,
+                'name' => $assign->subject->name,
+            ];
+        });
+
+        return response()->json($availableSubjects);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -114,17 +143,47 @@ class ExamScheduleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ExamSchedule $examSchedule)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
     {
-        //
+        // Retrieve the exam schedule by its ID
+        $schedule = ExamSchedule::findOrFail($id);
+        // Pass the schedule and other necessary data (like classes, examinations) to the view
+        $classes = Classes::all(); // Or your specific method for getting classes
+        $examinations = Examination::all(); // Or your specific method for getting examinations
+        $subjects = Subject::all(); // Assuming you have a subject table or model
+
+        return view('admin.exam_schedule_edit', compact('schedule', 'classes', 'examinations', 'subjects'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExamSchedule $examSchedule)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'examination_id' => 'required',
+            'class_id' => 'required',
+            'subject_id' => 'required',
+            'exam_date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
+            'room_no' => 'required',
+        ]);
+
+        $exam_schedule = ExamSchedule::findOrFail($id);
+        $exam_schedule->examination_id = $request->examination_id;
+        $exam_schedule->class_id = $request->class_id;
+        $exam_schedule->subject_id = $request->subject_id;
+        $exam_schedule->exam_date = $request->exam_date;
+        $exam_schedule->start_time = $request->start_time;
+        $exam_schedule->end_time = $request->end_time;
+        $exam_schedule->room_no = $request->room_no;
+        $exam_schedule->save();
+
+        return redirect()->route('exam.schedule.index')->with('success', 'Exam Schedule updated successfully.');
     }
 
     /**

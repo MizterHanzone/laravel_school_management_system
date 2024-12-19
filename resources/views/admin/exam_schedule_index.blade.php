@@ -92,6 +92,9 @@
                                             <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('h:i A') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($schedule->end_time)->format('h:i A') }}</td>
                                             <td>{{ $schedule->room_no }}</td>
+                                            <td>
+                                                <a href="{{ route('exam.schedule.edit', $schedule->id) }}" class="btn btn-warning btn-sm">Edit</a> <!-- Edit button -->
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif

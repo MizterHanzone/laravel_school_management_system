@@ -78,18 +78,6 @@ class User extends Authenticatable
     }
 
     // assign class teacher
-    // public function teachers()
-    // {
-    //     return $this->belongsToMany(User::class, 'assign_class_teacher', 'class_id', 'user_id');
-    // }
-
-    // assign class teacher
-    // public function classes()
-    // {
-    //     return $this->belongsToMany(Classes::class, 'assign_class_teacher', 'user_id', 'class_id');
-    // }
-
-    // assign class teacher
     public function assignedClasses()
     {
         return $this->hasMany(AssignClassToTeacher::class, 'user_id');

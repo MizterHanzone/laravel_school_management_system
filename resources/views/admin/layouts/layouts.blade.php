@@ -112,17 +112,24 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('student.attendance.index') }}"
+                                class="nav-link {{ request()->routeIs('student.attendance.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar-check"></i>
+                                <p>Attendance</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('time.table.index') }}"
                                 class="nav-link {{ request()->routeIs('time.table.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-calendar-check"></i>
-                                <p>Time Table</p>
+                                <p>Schedule Study</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('examination.index') }}"
                                 class="nav-link {{ request()->routeIs('examination.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-clipboard-check"></i>
-                                <p>Examination</p>
+                                <p>Exam Name</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -130,6 +137,13 @@
                                 class="nav-link {{ request()->routeIs('exam.schedule.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>Exam Schedules</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('register.mark.index') }}"
+                                class="nav-link {{ request()->routeIs('register.mark.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-graduate"></i>
+                                <p>Mark</p>
                             </a>
                         </li>
                         <li class="nav-item">

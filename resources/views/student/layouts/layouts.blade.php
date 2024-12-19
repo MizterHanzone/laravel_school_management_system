@@ -80,7 +80,14 @@
                             <a href="{{route('student.time.table')}}"
                                 class="nav-link {{ request()->routeIs('student.time.table') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-chalkboard"></i>
-                                <p>My Time Table</p>
+                                <p>My Schedule</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('student.my.exam.schedule')}}"
+                                class="nav-link {{ request()->routeIs('student.my.exam.schedule') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-chalkboard"></i>
+                                <p>My Exam Schedule</p>
                             </a>
                         </li>
                         <li class="nav-item">

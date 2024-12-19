@@ -10,6 +10,8 @@ use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\ExamScheduleController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\RegisterMarkController;
+use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\StudentControllercls;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -131,8 +133,22 @@ Route::middleware([SessionTimeout::class])->group(function () {
         // exam schedule
         Route::get('/exam/schedule', [ExamScheduleController::class, 'index'])->name('exam.schedule.index');
         Route::get('/exam/schedule/create', [ExamScheduleController::class, 'create'])->name('exam.schedule.create');
-        Route::get('/get/subjects/by/class', [ExamScheduleController::class, 'getSubjectsByClass'])->name('get.subjects.by.class.exam');
+        Route::get('/get/subjects/by/class', [ExamScheduleController::class, 'getSubjectsByClass'])->name('get.subjects.by.classes');
         Route::post('/exam-schedules/store', [ExamScheduleController::class, 'store'])->name('exam.schedule.store');
+        Route::get('exam-schedules/{id}/edit', [ExamScheduleController::class, 'edit'])->name('exam.schedule.edit');
+        Route::put('exam-schedules/{id}', [ExamScheduleController::class, 'update'])->name('exam.schedule.update');
+
+        // register mark
+        Route::get('/register/mark', [RegisterMarkController::class, 'index'])->name('register.mark.index');
+        Route::get('register/mark/create', [RegisterMarkController::class, 'create'])->name('register.mark.create');
+        Route::post('register/mark/store', [RegisterMarkController::class, 'store'])->name('register.mark.store');
+        Route::post('/register-mark/update', [RegisterMarkController::class, 'update'])->name('register.mark.update');
+
+        // student attendance
+        Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance.index');
+        Route::get('attendance/{id}', [StudentAttendanceController::class, 'show'])->name('show');
+        Route::get('/student/attendance/create', [StudentAttendanceController::class, 'create'])->name('student.attendance.create');
+        Route::post('/student/attendance/store', [StudentAttendanceController::class, 'store'])->name('student.attendance.store');
     });
 
     // student
@@ -143,6 +159,7 @@ Route::middleware([SessionTimeout::class])->group(function () {
         Route::post('/student/update/password', [StudentControllercls::class, 'student_update_password'])->name('student.update.password');
         Route::get('/student/my/subject', [StudentControllercls::class, 'my_subject'])->name('student.my.subject');
         Route::get('/student/time-table', [StudentControllercls::class, 'my_time_table'])->name('student.time.table');
+        Route::get('/student/my-exam-schedule', [StudentControllercls::class, 'my_exam_schedule'])->name('student.my.exam.schedule');
     });
 
     // teacher

@@ -112,7 +112,7 @@
                                 @foreach ($students as $student)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td><img src="{{ asset('storage/' . $student->photo) }}" alt="" class="image" width="50" height="50"></td><td><img src="{{ asset('storage/' . $student->photo) }}" alt="" class="image" width="50" height="50"></td>
+                                        <td><img src="{{ asset('storage/' . $student->photo) }}" alt="" class="image" width="50" height="50"></td>
                                         <td>{{ $student->name }}</td>
                                         <td>{{ $student->last_name }}</td>
                                         <td>{{ $student->gender == 1 ? 'Male' : 'Female' }}</td>

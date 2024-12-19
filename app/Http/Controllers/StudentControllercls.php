@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademiYear;
 use App\Models\Classes;
+use App\Models\Examination;
+use App\Models\ExamSchedule;
+use App\Models\Subject;
 use App\Models\TimeTable;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -230,5 +233,39 @@ class StudentControllercls extends Controller
             ->get();
 
         return view('student.my_time_table', compact('timeTables'));
+    }
+
+    public function my_exam_schedule(Request $request)
+    {
+        $student = Auth::user();
+
+        // Check if the student is assigned to any class
+        if (!$student->class) {
+            return redirect()->route('student.my.exam.schedule')->with('error', 'You are not assigned to any class. Please contact the administrator.');
+        }
+
+        $classes = Classes::all();
+        $examinations = Examination::all();
+        $subjects = Subject::all();
+
+        // Capture the selected class ID and examination ID
+        $class_id = $request->input('class_id');
+        $examination_id = $request->input('examination_id');
+
+        // Default to an empty collection
+        $exam_schedules = collect();
+        if ($class_id && $examination_id) {
+            $exam_schedules = ExamSchedule::where('class_id', $class_id)
+                ->where('examination_id', $examination_id)
+                ->with(['class', 'subject', 'examination'])
+                ->get();
+        } elseif ($student->class) {
+            $exam_schedules = ExamSchedule::where('class_id', $student->class->id)
+                ->where('examination_id', $examination_id)
+                ->with(['class', 'subject', 'examination'])
+                ->get();
+        }
+
+        return view('student.my_exam_schedule', compact('examinations', 'subjects', 'classes', 'examination_id', 'exam_schedules'));
     }
 }
